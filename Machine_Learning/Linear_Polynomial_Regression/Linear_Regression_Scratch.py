@@ -37,4 +37,11 @@ class Linear_Regression_Sc:
     def predict(self, X):
         return self.slope * X + self.bias
 
+class Lasso_Sc:
+    def __init__(self, learning_rate = 0.01, epochs = 1000):
+        self.learning_rate = learning_rate
+        self.epochs = epochs
+        self.slope = 0 #slope
+        self.bias = 0 #intercepts
     
+    def fit(self, X, y):
