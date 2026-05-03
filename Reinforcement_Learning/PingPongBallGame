@@ -1,0 +1,119 @@
+# Pong RL — Deep Q-Network
+
+A reinforcement learning agent that learns to play single-player Pong
+using a **Deep Q-Network (DQN)**.
+
+```
+┌─────────────────────────────────────────────┐
+│  │                               │           │
+│  │  ←——— ball bounces ————→     │  RIGHT    │
+│  │                               │  WALL     │
+│  PADDLE                          │           │
+│  (AI)                                        │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## Project structure
+
+```
+pong_rl/
+├── pong_env.py       # Custom environment (ball, paddle, physics)
+├── dqn_agent.py      # DQN agent (Q-network + replay buffer)
+├── train.py          # Training loop
+├── play.py           # Watch a trained agent play
+└── requirements.txt
+```
+
+---
+
+## Quick start
+
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+> Needs Python 3.9+. A GPU is optional but speeds things up.
+
+### 2. Train the agent
+
+```bash
+python train.py
+```
+
+Training runs for **2 000 episodes** by default and prints stats every 20:
+
+```
+  Ep   20 | AvgReward   -3.12 | AvgHits   0.2 | ε 0.905 | ⏱    4.1s
+  Ep   40 | AvgReward   -1.87 | AvgHits   0.8 | ε 0.818 | ⏱    8.3s
+  ...
+  Ep 2000 | AvgReward   18.45 | AvgHits  12.3 | ε 0.050 | ⏱  412.0s
+```
+
+Checkpoints are saved to:
+- `pong_dqn.pth`       — latest
+- `pong_dqn_best.pth`  — highest average reward
+
+### 3. Watch the trained agent play
+
+```bash
+python play.py
+```
+
+A pygame window opens and the agent plays 10 games autonomously.
+
+---
+
+## How it works
+
+### Environment (`pong_env.py`)
+
+| Component | Detail |
+|-----------|--------|
+| **State** | `[ball_x, ball_y, ball_vx, ball_vy, paddle_y]` — 5 normalised floats |
+| **Actions** | 0 = stay, 1 = up, 2 = down |
+| **Rewards** | +2 per hit (bonus grows with rally length), +0.05/frame alive, −5 for miss |
+| **Episode end** | Ball exits left side of screen |
+
+### Agent (`dqn_agent.py`)
+
+| Hyper-parameter | Value |
+|-----------------|-------|
+| Architecture | 5 → 128 → 128 → 3 |
+| Optimizer | Adam, lr = 1e-3 |
+| Discount γ | 0.99 |
+| Replay buffer | 50 000 transitions |
+| Batch size | 64 |
+| ε start → end | 1.0 → 0.05 (decay 0.995/episode) |
+| Target-net sync | every 300 steps |
+| Loss | Huber (smooth L1) |
+
+### Training flow
+
+```
+for each episode:
+    reset env → get state s
+    loop:
+        select action a (ε-greedy)
+        execute a → (s', r, done)
+        store (s, a, r, s', done) in replay buffer
+        sample mini-batch → compute Bellman target → update online net
+        every 300 steps → copy online net → target net
+    until done
+```
+
+---
+
+## Tuning tips
+
+| Goal | Change |
+|------|--------|
+| Train faster (no window) | `RENDER = False` in train.py (default) |
+| Watch training live | `RENDER = True` in train.py |
+| Harder ball | Increase `BALL_SPEED` in pong_env.py |
+| Smaller paddle | Decrease `PADDLE_H` in pong_env.py |
+| More exploration | Increase `epsilon_decay` closer to 1.0 |
+| Longer training | Increase `EPISODES` in train.py |

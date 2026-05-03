@@ -1,2 +1,4 @@
 quant_venv/
 .venv/
+#from one of my hackathon
+.jac/
