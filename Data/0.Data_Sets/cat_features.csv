@@ -1,0 +1,11 @@
+Ear shape,Face shape,Whiskers,Weight (lbs.),Cat
+Pointy,Round,Present,7.2,1
+Floppy,Not round,Absent,8.8,0
+Pointy,Round,Absent,15.0,1
+Pointy,Not round,Present,9.2,0
+Floppy,Not round,Absent,8.4,0
+Pointy,Round,Absent,7.6,1
+Pointy,Round,Present,11.0,1
+Floppy,Not round,Present,10.2,1
+Floppy,Round,Absent,18.0,0
+Pointy,Round,Absent,20.0,1
