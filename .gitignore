@@ -2,3 +2,6 @@ quant_venv/
 .venv/
 #from one of my hackathon
 .jac/
+data/
+starter_code/
+W24-RvF/
