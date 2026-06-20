@@ -19,6 +19,9 @@ class ZeroCouponBond:
 
     def ytm_continuous(self, market_price):
         return -math.log(market_price / self.face_value) / self.maturity
+    
+    #zero matury bond macaulay duration is the expiry date itself anyway so no need for implemenetation
+    #given at that time YTM = date to maturity anyways
 
 
 class CouponBond:
@@ -57,7 +60,7 @@ class CouponBond:
         def price(y):
             return self.price(y)
 
-        for _ in range(100):
+        for _ in range(100): #basically binary estimation
             mid = (low + high) / 2
             p = price(mid)
 
