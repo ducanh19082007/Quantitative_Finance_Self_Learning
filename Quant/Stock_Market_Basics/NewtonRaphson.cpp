@@ -20,7 +20,7 @@ const double PI = 3.1415926;
 class NewtonRaphson{
 private:
     double implied_volatility;
-    double V; //market price
+    double V; //market priceb
     double E; // strike price
     double T; // expiry
     double S; // asset

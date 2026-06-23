@@ -58,7 +58,17 @@ public:
 
     BruteForceOptionPricing(double V, double E, double T, double S, double r, 
         double error, double volatility, double dividents) : 
-                V(V), E(E), T(T), S(S), r(r), error(error), volatility(volatility), dividents(dividents) {} 
+        V(V), E(E), T(T), S(S), r(r), error(error), volatility(volatility), dividents(dividents) {} 
+
+    BruteForceOptionPricing(double E, double T, double S, double r) : 
+        E(E), T(T), S(S), r(r) {}
+        
+    BruteForceOptionPricing(double E, double T, double S, double r, double error) : 
+        E(E), T(T), S(S), r(r), error(error) {}
+
+    BruteForceOptionPricing(double E, double T, double S, double r, 
+        double error, double volatility, double dividents) : 
+        E(E), T(T), S(S), r(r), error(error), volatility(volatility), dividents(dividents) {} 
 
     double OptionValue(string OptionType) {
         if (OptionType == "Call") {
